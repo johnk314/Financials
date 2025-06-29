@@ -234,7 +234,7 @@ class SingleBase:
 
         df.columns = ["Date", "Market Cap"]
         df["Date"] = pd.to_datetime(df["Date"])
-        df = df.set_index("Date").sort_index(ascending=False)
+        df = df.set_index("Date").sort_index(ascending=True)
 
         df = df.apply(lambda x: (pd.to_numeric(x, errors="coerce") * 1000))
 
@@ -255,6 +255,11 @@ class SingleBase:
             df = pd.DataFrame(data=data, index=lbls)
             df = df.apply(lambda x: pd.to_numeric(x, errors="coerce"))
             df.replace({0: np.nan}, inplace=True)
+            
+            df = df.T
+            df.sort_index(inplace=True, ascending=True) # re-order columns to increase from left to right.
+            df = df.T
+
         else:
             df = pd.DataFrame()
 
